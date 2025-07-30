@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard • Issue Tracker{% endblock %}
+{% block content %}
+
+
+
+    <main class="px-4 py-4">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h1 class="h4">Welcome, <span class="badge bg-light text-success">Admin</span></h1>
+    </div>
+
+    <div class="row justify-content-center g-4">
+      <!-- Create Issue -->
+      <div class="col-12 col-md-4">
+        <div class="card shadow-sm h-100 border-success border-2">
+          <div class="card-body d-flex flex-column text-center">
+            <h5 class="card-title text-success">Create Issue</h5>
+            <p class="card-text flex-grow-1">Log a new issue and (optionally) assign it to an employee.</p>
+            <a href="{{ url_for('add_issue') }}" class="btn btn-success mt-auto w-100">New Issue</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- View Issues -->
+      <div class="col-12 col-md-4">
+        <div class="card shadow-sm h-100 border-primary border-2">
+          <div class="card-body d-flex flex-column text-center">
+            <h5 class="card-title text-primary">All Issues</h5>
+            <p class="card-text flex-grow-1">See every issue, assign employees, edit details or toggle status.</p>
+            <a href="{{ url_for('view_issues') }}" class="btn btn-primary mt-auto w-100">Manage Issues</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Manage Employees -->
+      <div class="col-12 col-md-4">
+        <div class="card shadow-sm h-100 border-secondary border-2">
+          <div class="card-body d-flex flex-column text-center">
+            <h5 class="card-title text-secondary">Employees</h5>
+            <p class="card-text flex-grow-1">Add new employees and link them to login accounts.</p>
+            <a href="{{ url_for('add_employee') }}" class="btn btn-secondary mt-auto w-100">Manage Employees</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main> 
+</div>
+</div>
+
+{% endblock %}

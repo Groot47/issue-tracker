@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Profile • Issue Tracker{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>👤 Profile</h2>
+  <table class="table table-bordered w-50">
+    <tr>
+      <th>Username</th>
+      <td>{{ user.username }}</td>
+    </tr>
+    <tr>
+      <th>Email</th>
+      <td>{{ user.email }}</td>
+    </tr>
+    <tr>
+      <th>Phone</th>
+      <td>{{ user.phone }}</td>
+    </tr>
+    <tr>
+      <th>Role</th>
+      <td>{{ role|capitalize }}</td>
+    </tr>
+    {% if role == 'employee' and employee %}
+    <tr>
+      <th>Full Name</th>
+      <td>{{ employee.name }}</td>
+    </tr>
+    {% endif %}
+  </table>
+</div>
+{% endblock %}

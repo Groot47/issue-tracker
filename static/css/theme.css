@@ -1,0 +1,70 @@
+/* =============================================================
+   IssueLogix — Custom Theme
+     • Light, fresh, slightly material‑like aesthetic
+     • Primary‑green brand, complementary blues / neutrals
+   ============================================================= */
+
+
+:root {
+  /* Brand palette */
+  --clr-primary:   #198754;  /* Bootstrap “success” but kept for brand */
+  --clr-primary-50:#e8f5ee;
+  --clr-primary-100:#cfe9db;
+  --clr-primary-700:#12643f;
+
+  --clr-accent:    #0d6efd;  /* Bootstrap “primary” blue */
+  --clr-warning:   #ffc107;
+  --clr-danger:    #dc3545;
+
+  /* Typography */
+  --font-headings: "Poppins", "Segoe UI", sans-serif;
+  --font-body:     "Inter", "Segoe UI", sans-serif;
+}
+
+/* Load Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap');
+
+body {
+  font-family: var(--font-body);
+  background-color: #f9fafb; /* subtle gray */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headings);
+  font-weight: 600;
+}
+
+/* ----- Buttons ------------------------------------------------ */
+.btn-success {
+  background-color: var(--clr-primary);
+  border-color: var(--clr-primary-700);
+}
+.btn-success:hover {
+  background-color: var(--clr-primary-700);
+  border-color: var(--clr-primary-700);
+}
+
+/* Primary card borders for emphasis */
+.card.border-success {
+  border-width: 2px !important;
+}
+
+/* Navbar tweak */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0,0,0,.05);
+}
+
+/* Table tweaks */
+.table > :not(:last-child) > :last-child > * {
+  border-bottom-color: #dee2e6;
+}
+
+/* Toast animation override for smoother fade */
+.toast {
+  transition: transform .35s ease-in-out, opacity .35s ease-in-out;
+}
+
+/* Badge subtle shadow */
+.badge {
+  box-shadow: 0 0 0 1px rgba(0,0,0,.05);
+}

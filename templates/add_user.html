@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block title %}Add User • Issue Tracker{% endblock %}
+{% block content %}
+
+<div class="row g-4">
+  <!-- ───────── Add User Form ───────── -->
+  <div class="col-12 col-lg-6">
+    <div class="card shadow-sm rounded-3">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">Add Login Account</h5>
+      </div>
+      <div class="card-body">
+        {% if error %}
+          <div class="alert alert-danger mb-3">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" class="row g-3 align-items-end">
+          <!-- Username -->
+          <div class="col-12">
+            <label class="form-label fw-semibold">Username</label>
+            <input name="username" class="form-control" placeholder="Unique username" required>
+          </div>
+
+          <!-- Password -->
+          <div class="col-12 col-lg-6">
+            <label class="form-label fw-semibold">Password</label>
+            <input type="password" name="password" class="form-control" required>
+          </div>
+
+          <!-- Role -->
+          <div class="col-12 col-lg-6">
+            <label class="form-label fw-semibold">Role</label>
+            <select name="role" class="form-select" required>
+              <option value="employee">Employee</option>
+              <option value="user">User (client)</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
+          <!-- Email -->
+          <div class="col-12 col-lg-6">
+            <label class="form-label fw-semibold">Email</label>
+            <input type="email" name="email" class="form-control" placeholder="example@mail.com">
+          </div>
+
+          <!-- Phone -->
+          <div class="col-12 col-lg-6">
+            <label class="form-label fw-semibold">Phone</label>
+            <input type="text" name="phone" class="form-control" placeholder="Mobile number">
+          </div>
+
+          <div class="col-12 text-end">
+            <button class="btn btn-success">Create User</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────── Existing Users Table ───────── -->
+  <div class="col-12 col-lg-6">
+    <div class="card shadow-sm rounded-3">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">Existing Users</h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-bordered mb-0 align-middle">
+            <thead class="table-light text-center">
+              <tr>
+                <th style="width:10%">ID</th>
+                <th>Username</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              {% for u in users %}
+                <tr>
+                  <td>{{ u.id }}</td>
+                  <td class="text-start">{{ u.username }}</td>
+                  <td>{{ u.role }}</td>
+                </tr>
+              {% endfor %}
+              {% if not users %}
+                <tr><td colspan="3" class="text-center p-3">No users registered yet.</td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

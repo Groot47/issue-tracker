@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Employees • Issue Tracker{% endblock %}
+{% block content %}
+
+<div class="row g-4">
+  <!-- ───────── Add Employee Form ───────── -->
+  <div class="col-12 col-lg-6">
+    <div class="card shadow-sm rounded-3">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">Add Employee</h5>
+      </div>
+      <div class="card-body">
+        {% if error %}
+          <div class="alert alert-danger mb-3">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" class="row g-3 align-items-end">
+          <!-- Display Name -->
+          <div class="col-12">
+            <label class="form-label fw-semibold">Display Name</label>
+            <input name="name" class="form-control" placeholder="Employee Name" required>
+          </div>
+
+          <!-- Link to User -->
+          <div class="col-12">
+            <label class="form-label fw-semibold">Login User</label>
+            <select name="user_id" class="form-select" required>
+              <option value="" disabled selected>Select employee user…</option>
+              {% for u in users %}
+                <option value="{{ u.id }}">{{ u.username }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-12 text-end">
+            <button class="btn btn-success">Add Employee</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────── Current Employees Table ───────── -->
+  <div class="col-12 col-lg-6">
+    <div class="card shadow-sm rounded-3">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">Current Employees</h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-bordered mb-0 align-middle">
+            <thead class="table-light text-center">
+              <tr>
+                <th style="width:5%">#</th>
+                <th>Name</th>
+                <th>Login User</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              {% for emp in employees %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td class="text-start">{{ emp.name }}</td>
+                  <td>{{ emp.user.username }}</td>
+                </tr>
+              {% endfor %}
+              {% if not employees %}
+                <tr><td colspan="3" class="text-center p-3">No employees yet.</td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

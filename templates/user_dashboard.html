@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}My Issues • Issue Tracker{% endblock %}
+{% block content %}
+
+<div class="card shadow-sm rounded-3">
+  <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">My Reported Issues</h5>
+    <a href="{{ url_for('add_issue') }}" class="btn btn-light btn-sm">
+      <i class="bi bi-plus-lg"></i> Create Issue
+    </a>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-bordered mb-0 align-middle">
+        <thead class="table-light text-center">
+          <tr>
+            <th style="width:5%">#</th>
+            <th>ID</th>
+            <th>Created At</th>
+            <th>Category</th>
+            <th>Location</th>
+            <th>Assigned To</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody class="text-center">
+          {% for i in issues %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ i.id }}</td>
+              <td>{{ i.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+
+              <td class="text-start">{{ i.category }}{% if i.other_specify %} – {{ i.other_specify }}{% endif %}</td>
+
+              <td class="text-start">{{ i.location }}{% if i.location_other %} – {{ i.location_other }}{% endif %}</td>
+
+              <td>{{ employees.get(i.employee_id, '— Unassigned —') }}</td>
+
+              <td>
+                <span class="badge bg-{{ 'success' if i.status=='Solved' else 'warning text-dark' }}">{{ i.status }}</span>
+              </td>
+
+              <td>
+                <a class="btn btn-sm btn-primary" href="{{ url_for('toggle_status', iid=i.id) }}">Toggle</a>
+              </td>
+            </tr>
+          {% endfor %}
+          {% if not issues %}
+            <tr><td colspan="8" class="text-center p-3">No issues reported yet.</td></tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

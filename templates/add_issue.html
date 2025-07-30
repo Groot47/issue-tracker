@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block title %}Create Issue • Issue Tracker{% endblock %}
+{% block content %}
+
+<div class="row g-4">
+  <!-- ───────── Create Issue Form ───────── -->
+  <div class="col-12 col-lg-6">
+    <div class="card shadow-sm rounded-3">
+      <div class="card-header bg-success text-white">
+        <h5 class="mb-0">Create Issue</h5>
+      </div>
+      <div class="card-body">
+        <form method="POST" class="row g-3 align-items-end">
+
+          <!-- Category -->
+          <div class="col-12">
+            <label class="form-label fw-semibold">Category</label>
+            <select id="cat" name="category" class="form-select" required onchange="toggleOther()">
+              <option value="" selected disabled>Choose…</option>
+              <option value="Software">Software</option>
+              <option value="Hardware">Hardware</option>
+              <option value="Other">Other</option>
+            </select>
+            <small class="text-muted">Choose “Other” to type your own.</small>
+          </div>
+
+          <!-- Category Other -->
+          <div class="col-12" id="other-wrapper" style="display:none;">
+            <label class="form-label fw-semibold">Other (specify)</label>
+            <input id="other-input" name="other_specify" class="form-control">
+          </div>
+
+          <!-- Location -->
+          <div class="col-12">
+            <label class="form-label fw-semibold">Location</label>
+            <select id="loc" name="location" class="form-select" required onchange="toggleLocOther()">
+              <option value="" selected disabled>Choose…</option>
+              <option>Computer Department</option>
+              <option>E &amp; TC Department</option>
+              <option>Mechanical Department</option>
+              <option>Civil Department</option>
+              <option>Metallurgy Department</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <!-- Location Other -->
+          <div class="col-12" id="loc-wrapper" style="display:none;">
+            <label class="form-label fw-semibold">Other (specify)</label>
+            <input id="loc-input" name="location_other" class="form-control">
+          </div>
+
+          <!-- Client Name -->
+          <div class="col-12 col-lg-6">
+            <label class="form-label fw-semibold">Client Name</label>
+            <input name="client_name" class="form-control" placeholder="Who reported the issue?" required>
+          </div>
+
+          <!-- Status -->
+          <div class="col-12 col-lg-6">
+            <label class="form-label fw-semibold">Status</label>
+            <select name="status" class="form-select">
+              <option>Not Solved</option>
+              <option>Solved</option>
+            </select>
+          </div>
+
+          <!-- Assign (Admins only) -->
+          {% if session.role == 'admin' %}
+            <div class="col-12">
+              <label class="form-label fw-semibold">Assign to</label>
+              <select name="employee_id" class="form-select">
+                <option value="">— Unassigned —</option>
+                {% for e in employees %}
+                  <option value="{{ e.id }}">{{ e.name }}</option>
+                {% endfor %}
+              </select>
+              <small class="text-muted">Leave blank to assign later.</small>
+            </div>
+          {% else %}
+            <input type="hidden" name="employee_id" value="">
+          {% endif %}
+
+          <div class="col-12 text-end">
+            <button class="btn btn-success">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────── Existing Issues Table ───────── -->
+  <div class="col-12 col-lg-6">
+    <div class="card shadow-sm rounded-3">
+      <div class="card-header bg-light">
+        <h5 class="mb-0">Existing Issues</h5>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-bordered mb-0 align-middle">
+            <thead class="table-light text-center">
+              <tr>
+                <th style="width:5%">#</th>
+                <th>Category</th>
+                <th>Location</th>
+                <th>Client</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              {% for t in issues %}
+                <tr>
+                  <td>{{ loop.index }}</td>
+                  <td class="text-start">{{ t.category }}{% if t.other_specify %} – {{ t.other_specify }}{% endif %}</td>
+                  <td class="text-start">{{ t.location }}{% if t.location_other %} – {{ t.location_other }}{% endif %}</td>
+                  <td>{{ t.client_name }}</td>
+                  <td>
+                    <span class="badge bg-{{ 'success' if t.status=='Solved' else 'warning text-dark' }}">{{ t.status }}</span>
+                  </td>
+                </tr>
+              {% endfor %}
+              {% if not issues %}
+                <tr><td colspan="5" class="text-center p-3">No issues logged yet.</td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleOther(){
+  const sel = document.getElementById('cat');
+  const wrap= document.getElementById('other-wrapper');
+  const inp = document.getElementById('other-input');
+  if(sel.value === 'Other'){ wrap.style.display='block'; }
+  else { wrap.style.display='none'; inp.value=''; }
+}
+function toggleLocOther(){
+  const sel = document.getElementById('loc');
+  const wrap= document.getElementById('loc-wrapper');
+  const inp = document.getElementById('loc-input');
+  if(sel.value === 'Other'){ wrap.style.display='block'; }
+  else { wrap.style.display='none'; inp.value=''; }
+}
+// run once on page load to respect default selections
+toggleOther();
+toggleLocOther();
+</script>
+{% endblock %}

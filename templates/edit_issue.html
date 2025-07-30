@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}Edit Issue #{{ issue.id }} • Issue Tracker{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-8">
+    <div class="card shadow-sm rounded-3">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Edit Issue #{{ issue.id }}</h5>
+        <a href="{{ url_for('view_issues') }}" class="btn btn-sm btn-light">Back</a>
+      </div>
+      <div class="card-body">
+        <form method="POST" class="row g-3 align-items-end">
+
+          <!-- Category -->
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-semibold">Category</label>
+            <select id="cat" name="category" class="form-select" required onchange="toggleOther()">
+              {% for opt in ['Software','Hardware','Other'] %}
+                <option value="{{ opt }}" {% if issue.category==opt %}selected{% endif %}>{{ opt }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Category Other -->
+          <div class="col-12 col-md-6" id="other-wrapper" style="display:none;">
+            <label class="form-label fw-semibold">Other (specify)</label>
+            <input id="other-input" name="other_specify" class="form-control" value="{{ issue.other_specify or '' }}">
+          </div>
+
+          <!-- Location -->
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-semibold">Location</label>
+            <select id="loc" name="location" class="form-select" required onchange="toggleLocOther()">
+              {% for loc in ['Computer Department','E & TC Department','Mechanical Department','Civil Department','Metallurgy Department','Other'] %}
+                <option value="{{ loc }}" {% if issue.location==loc %}selected{% endif %}>{{ loc }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Location Other -->
+          <div class="col-12 col-md-6" id="loc-wrapper" style="display:none;">
+            <label class="form-label fw-semibold">Other (specify)</label>
+            <input id="loc-input" name="location_other" class="form-control" value="{{ issue.location_other or '' }}">
+          </div>
+
+          <!-- Client Name -->
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-semibold">Client Name</label>
+            <input name="client_name" class="form-control" value="{{ issue.client_name }}" required>
+          </div>
+
+          <!-- Status -->
+          <div class="col-12 col-md-6">
+            <label class="form-label fw-semibold">Status</label>
+            <select name="status" class="form-select">
+              <option {% if issue.status=='Not Solved' %}selected{% endif %}>Not Solved</option>
+              <option {% if issue.status=='Solved' %}selected{% endif %}>Solved</option>
+            </select>
+          </div>
+
+          <!-- Assign -->
+          <div class="col-12">
+            <label class="form-label fw-semibold">Assign to</label>
+            <select name="employee_id" class="form-select">
+              <option value="">— Unassigned —</option>
+              {% for e in employees %}
+                <option value="{{ e.id }}" {% if issue.employee_id==e.id %}selected{% endif %}>{{ e.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="col-12 text-end">
+            <button class="btn btn-primary">Save Changes</button>
+            <a class="btn btn-secondary" href="{{ url_for('view_issues') }}">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleOther(){
+  const sel  = document.getElementById('cat');
+  const wrap = document.getElementById('other-wrapper');
+  const inp  = document.getElementById('other-input');
+  if(sel.value === 'Other'){ wrap.style.display='block'; }
+  else { wrap.style.display='none'; inp.value=''; }
+}
+function toggleLocOther(){
+  const sel  = document.getElementById('loc');
+  const wrap = document.getElementById('loc-wrapper');
+  const inp  = document.getElementById('loc-input');
+  if(sel.value === 'Other'){ wrap.style.display='block'; }
+  else { wrap.style.display='none'; inp.value=''; }
+}
+// Initialise visibility on load
+window.addEventListener('DOMContentLoaded', ()=>{ toggleOther(); toggleLocOther(); });
+</script>
+
+{% endblock %}
